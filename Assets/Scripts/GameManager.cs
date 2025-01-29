@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject IntroUI;
+    [SerializeField] private GameObject DeadUI;
     [SerializeField] private GameObject EnemySpawner;
     [SerializeField] private GameObject FoodSpawner;
     [SerializeField] private GameObject GoldenSpawner;
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
             State = GameState.Dead;
             PlayerScript.KillPlayer();
 
+            DeadUI.SetActive(true);
             EnemySpawner.SetActive(false);
             FoodSpawner.SetActive(false);
             GoldenSpawner.SetActive(false);

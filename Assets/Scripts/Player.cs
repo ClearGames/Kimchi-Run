@@ -64,13 +64,12 @@ public class Player : MonoBehaviour
         isInvincable = false;
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "enemy")
         {
-            if(!isInvincable) Destroy(collision.gameObject);
-            Hit();
+            Destroy(collision.gameObject);
+            if(!isInvincable) Hit();
         }
         else if (collision.gameObject.tag == "food")
         {
