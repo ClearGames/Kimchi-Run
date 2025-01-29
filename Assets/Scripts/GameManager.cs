@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
     // Singleton
     public static GameManager Instance;
     public GameState State;
+    public float PlayStartTime;
     public int Lives;
 
     [Header("References")]
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject FoodSpawner;
     [SerializeField] private GameObject GoldenSpawner;
     [SerializeField] private Player PlayerScript;
+    [SerializeField] private TMP_Text scoreText;
 
     void Awake()
     {
@@ -38,9 +41,37 @@ public class GameManager : MonoBehaviour
         State = GameState.Intro;
     }
 
+    int CalculateScore()
+    {
+        return Mathf.FloorToInt(Time.time - PlayStartTime);
+    }
+
+    void SaveHighScore()
+    {
+        int score = CalculateScore();
+        int currentHighScore = PlayerPrefs.GetInt("highScore");
+        if(score > currentHighScore)
+        {
+            PlayerPrefs.SetInt("highScore", score);
+            PlayerPrefs.Save();
+        }
+    }
+
+    int GetHighScore() {
+        return PlayerPrefs.GetInt("highScore");
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if(State == GameState.Playing)
+        {
+            scoreText.text = "Score : " + CalculateScore();
+        }else if(State == GameState.Dead)
+        {
+            scoreText.text = "High Score : " + GetHighScore();
+        }
+
         if(State == GameState.Intro && Input.GetKeyDown(KeyCode.Space)){
             State = GameState.Playing;
             Lives = 3;
@@ -49,11 +80,13 @@ public class GameManager : MonoBehaviour
             EnemySpawner.SetActive(true);
             FoodSpawner.SetActive(true);
             GoldenSpawner.SetActive(true);
+            PlayStartTime = Time.time;
         }
         else if(State == GameState.Playing && Lives == 0)
         {
             State = GameState.Dead;
             PlayerScript.KillPlayer();
+            SaveHighScore();
 
             DeadUI.SetActive(true);
             EnemySpawner.SetActive(false);
