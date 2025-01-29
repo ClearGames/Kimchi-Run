@@ -33,4 +33,20 @@ public class Player : MonoBehaviour
             isGrounded = true;
         }
     }
+
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if(collision.gameObject.tag == "enemy")
+    //    {
+
+    //    }
+    //    else if(collision.gameObject.tag == "food")
+    //    {
+
+    //    }
+    //    else if (collision.gameObject.tag == "golden")
+    //    {
+
+    //    }
+    //}
 }
