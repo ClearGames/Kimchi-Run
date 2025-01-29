@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     [SerializeField] private BoxCollider2D playerBoxCollider;
 
     private bool isGrounded = true;
-    private int lives = 3;
     private bool isInvincable = false;
 
     private void Update()
@@ -38,7 +37,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void KillPlayer()
+    public void KillPlayer()
     {
         playerBoxCollider.enabled = false;
         playerAnimator.enabled = false;
@@ -47,12 +46,12 @@ public class Player : MonoBehaviour
 
     private void Hit()
     {
-        lives -= 1;
-        if (lives == 0) KillPlayer();
+        GameManager.Instance.Lives -= 1;
+        if (GameManager.Instance.Lives == 0) KillPlayer();
     }
     private void Heal()
     {
-        lives = Mathf.Min(3, lives + 1);
+        GameManager.Instance.Lives = Mathf.Min(3, GameManager.Instance.Lives + 1);
     }
 
     private void StartInvincible()
@@ -64,7 +63,6 @@ public class Player : MonoBehaviour
     {
         isInvincable = false;
     }
-
 
 
     private void OnTriggerEnter2D(Collider2D collision)
