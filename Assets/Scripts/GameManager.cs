@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject GoldenSpawner;
     [SerializeField] private Player PlayerScript;
     [SerializeField] private TMP_Text scoreText;
+    private float speed;
 
     void Awake()
     {
@@ -39,6 +40,13 @@ public class GameManager : MonoBehaviour
         IntroUI.SetActive(true);
         Lives = 3;
         State = GameState.Intro;
+    }
+
+    public float CalculateGameSpeed()
+    {
+        if (State != GameState.Playing) return 1f;
+        float speed = 1f + (0.5f * Mathf.Floor(CalculateScore() / 10f));
+        return Mathf.Min(speed, 10f);
     }
 
     int CalculateScore()
